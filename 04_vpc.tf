@@ -23,5 +23,5 @@ resource "aws_route_table" "kubernetes" {
 resource "aws_route_table_association" "kubernetes" {
   count = "${aws_subnet.kubernetes.count}"
   route_table_id = "${aws_route_table.kubernetes.id}"
-  subnet_id = "${aws_subnet.kubernetes.*.id}"
+  subnet_id = "${element(aws_subnet.kubernetes.*.id, count.index)}"
 }
