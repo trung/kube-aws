@@ -2,17 +2,22 @@ data "aws_kms_alias" "KmsKey" {
   name = "alias/${var.KmsKeyAlias}"
 }
 
-/*
-data "external" "DownloadKube" {
-  program = ["sh", "./scripts/download.sh"]
+data "aws_availability_zones" "available" {
 
-  query = {
-    url = "${var.ArtifactConfiguration["kube.url"]}"
-    outputFile = "${var.ArtifactConfiguration["kube.outputFile"]}"
-  }
 }
-*/
 
 data "external" "DownloadEtcd" {
-  program = ["sh", "./scripts/download.sh", "${var.ArtifactConfiguration["etcd.url"]}", "${var.ArtifactConfiguration["etcd.outputFile"]}"]
+  program = ["sh",
+    "./scripts/download.sh",
+    "${var.ArtifactConfiguration["etcd.url"]}",
+    "${var.ArtifactConfiguration["etcd.outputFile"]}"
+  ]
+}
+
+data "external" "DownloadKube" {
+  program = ["sh",
+    "./scripts/download.sh",
+    "${var.ArtifactConfiguration["kube.url"]}",
+    "${var.ArtifactConfiguration["kube.outputFile"]}"
+  ]
 }

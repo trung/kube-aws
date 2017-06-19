@@ -3,7 +3,16 @@ variable "CommonTags" {
   default = {
     builtBy = "trung"
     builtWith = "terraform"
+    builtReason = "Provisioning Kubernetes in AWS"
   }
+}
+
+variable "EtcdAMI" {
+  default = "ami-1967056a"
+}
+
+variable "KubernetesAMI" {
+  default = "ami-1967056a"
 }
 
 variable "KmsKeyAlias" {

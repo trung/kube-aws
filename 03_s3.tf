@@ -1,9 +1,7 @@
-# Create one bucket and upload kube components into it with KMS Key
-
 resource "aws_s3_bucket" "kube-artifacts-repository" {
   bucket = "kube-artifacts-repository"
   acl = "private"
-  depends_on = ["data.external.DownloadEtcd"]
+
   tags  = "${var.CommonTags}"
 }
 
@@ -13,16 +11,18 @@ resource "aws_s3_bucket_object" "etcd" {
   kms_key_id = "${data.aws_kms_alias.KmsKey.arn}"
   source = "${var.ArtifactConfiguration["etcd.outputFile"]}"
   content_type = "application/octet-stream"
+  depends_on = ["data.external.DownloadEtcd"]
 
   tags = "${var.CommonTags}"
 }
 
-/*
 resource "aws_s3_bucket_object" "kube" {
-  bucket = "${aws_s3_bucket.kube-artifacts.bucket}"
+  bucket = "${aws_s3_bucket.kube-artifacts-repository.bucket}"
   key = "kube"
   kms_key_id = "${data.aws_kms_alias.KmsKey.arn}"
-  content = "${data.http.DownloadKube}"
+  source = "${var.ArtifactConfiguration["kube.outputFile"]}"
+  content_type = "application/octet-stream"
+  depends_on = ["data.external.DownloadKube"]
+
   tags = "${var.CommonTags}"
 }
-*/
