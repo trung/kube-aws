@@ -11,13 +11,8 @@ data "external" "DownloadKube" {
     outputFile = "${var.ArtifactConfiguration["kube.outputFile"]}"
   }
 }
+*/
 
 data "external" "DownloadEtcd" {
-  program = ["sh", "./scripts/download.sh"]
-
-  query = {
-    url = "${var.ArtifactConfiguration["etcd.url"]}"
-    outputDir = "${var.ArtifactConfiguration["etcd.outputFile"]}"
-  }
+  program = ["sh", "./scripts/download.sh", "${var.ArtifactConfiguration["etcd.url"]}", "${var.ArtifactConfiguration["etcd.outputFile"]}"]
 }
-*/
