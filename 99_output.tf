@@ -1,3 +1,11 @@
+output "AZCount" {
+  value = "${data.aws_availability_zones.available.count}"
+}
+
+output "EC2Etcd1" {
+  value = "${format("%s - %s", aws_instance.etcd.0.public_dns, aws_instance.etcd.0.public_ip)}"
+}
+
 output "EtcdS3Url" {
   value = "${format("https://%s.amazonaws.com/%s/%s", aws_s3_bucket.kube-artifacts-repository.region, aws_s3_bucket.kube-artifacts-repository.bucket, aws_s3_bucket_object.etcd.key)}"
 }

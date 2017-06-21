@@ -8,15 +8,23 @@ variable "CommonTags" {
 }
 
 variable "EtcdAMI" {
-  default = "ami-1967056a"
+  default = "ami-9fe6c7ff"  # us-west-1
 }
 
 variable "KubernetesAMI" {
-  default = "ami-1967056a"
+  default = "ami-9fe6c7ff"  # us-west-1
 }
 
 variable "KmsKeyAlias" {
   default = "trung-key"
+}
+
+variable "MyIP" {
+  description = "CIDR block to limit only to my IP"
+}
+
+variable "KeyPairName" {
+  default = "trung-ec2-key"
 }
 
 variable "ArtifactConfiguration" {
