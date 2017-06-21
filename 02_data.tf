@@ -21,3 +21,20 @@ data "external" "DownloadKube" {
     "${var.ArtifactConfiguration["kube.outputFile"]}"
   ]
 }
+
+data "aws_iam_policy_document" "kube-artifacts-repository" {
+  statement {
+    sid = "Access-to-kube-artifacts-repository-only"
+    actions = [
+      "s3:*",
+    ]
+    resources = [
+      "arn:aws:s3:::${var.KubeArtifactsRepositoryBucketName}",
+      "arn:aws:s3:::${var.KubeArtifactsRepositoryBucketName}/*",
+    ]
+    principals {
+      identifiers = ["*"]
+      type = "AWS"
+    }
+  }
+}

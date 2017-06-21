@@ -1,3 +1,7 @@
+variable "region" {
+  default = "us-west-1"
+}
+
 variable "CommonTags" {
   type = "map"
   default = {
@@ -5,6 +9,10 @@ variable "CommonTags" {
     builtWith = "terraform"
     builtReason = "Provisioning Kubernetes in AWS"
   }
+}
+
+variable "KubeArtifactsRepositoryBucketName" {
+  default = "kube-artifacts-repository"
 }
 
 variable "EtcdAMI" {

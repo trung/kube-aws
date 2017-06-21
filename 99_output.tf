@@ -1,5 +1,5 @@
 output "AZCount" {
-  value = "${data.aws_availability_zones.available.count}"
+  value = "${var.region}: ${data.aws_availability_zones.available.count}"
 }
 
 output "EC2Etcd1" {
@@ -7,9 +7,9 @@ output "EC2Etcd1" {
 }
 
 output "EtcdS3Url" {
-  value = "${format("https://%s.amazonaws.com/%s/%s", aws_s3_bucket.kube-artifacts-repository.region, aws_s3_bucket.kube-artifacts-repository.bucket, aws_s3_bucket_object.etcd.key)}"
+  value = "${format("https://s3-%s.amazonaws.com/%s/%s", aws_s3_bucket.kube-artifacts-repository.region, aws_s3_bucket.kube-artifacts-repository.bucket, aws_s3_bucket_object.etcd.key)}"
 }
 
 output "KubeS3Url" {
-  value = "${format("https://%s.amazonaws.com/%s/%s", aws_s3_bucket.kube-artifacts-repository.region, aws_s3_bucket.kube-artifacts-repository.bucket, aws_s3_bucket_object.kube.key)}"
+  value = "${format("https://s3-%s.amazonaws.com/%s/%s", aws_s3_bucket.kube-artifacts-repository.region, aws_s3_bucket.kube-artifacts-repository.bucket, aws_s3_bucket_object.kube.key)}"
 }

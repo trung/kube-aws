@@ -7,5 +7,8 @@ resource "aws_instance" "etcd" {
   key_name = "${var.KeyPairName}"
   associate_public_ip_address = true
 
+  # this allows EC2 to CURL the S3 bucket using latest/meta-data/iam/info
+  iam_instance_profile = "s3_read_only"
+
   tags = "${merge(var.CommonTags, map("Name", format("Kubernetes-etcd-%d", count.index)))}"
 }
