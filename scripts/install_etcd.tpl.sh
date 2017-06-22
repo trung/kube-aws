@@ -16,27 +16,33 @@ log_file="/var/log/etcd-bootstrap.log"
 
 mkdir -p $${etcd_data_dir}
 pushd $${etcd_data_dir}
+
 cat >metainf <<EOF
 $${my_ip}
 $${instance_name}
 EOF
 
-
 cat >bootstrap.sh <<EOF
-#!/bin/sh -v
+!/bin/bash
+
+log() {
+    echo "\$(date) : \$$1" >> $$log_file
+}
 
 count=0
 cluster=""
-while [ "$${count}" -eq "${instance_number}" ]
+while [ "\$${count}" -lt "3" ]
 do
-    instance_to_check="etcd-$${count}"
-    data=$(curl -s -L https://s3-${region}.amazonaws.com/${bucket}/$${instance_to_check})
-    if [[ "$$data" =~ .+NoSuchKey.+ ]]; then
-        echo "Instance $${instance_to_check} not yet online" >> $$log_file
+    instance_to_check="etcd-\$${count}"
+    data=\$(curl -s -L https://s3-us-west-1.amazonaws.com/kube-artifacts-repository/\$${instance_to_check})
+    if [[ "\"\$${data}\"" =~ .+NoSuchKey.+ ]]
+    then
+        log "Instance \$${instance_to_check} not yet online"
         sleep 3
     else
-        echo "Cluster: $${cluster}" >> $$log_file
-        cluster="http://$${data}:2380,$${cluster}"
+        cluster="\$${instance_to_check}=http://\$${data}:2380,\$${cluster}"
+        log "Cluster: \$${cluster}"
+        count=\$(( \$${count} + 1 ))
     fi
 done
 
@@ -46,11 +52,12 @@ done
     --advertise-client-urls http://$${my_ip}:2379 \
     --listen-peer-urls http://$${my_ip}:2380 \
     --initial-advertise-peer-urls http://$${my_ip}:2380 \
-    --initial-cluster $$cluster \
+    --initial-cluster \$${cluster} \
     --initial-cluster-token a-very-random-token-foo-bar \
     --initial-cluster-state new &
 EOF
-chmod +x boostrap.sh
+
+chmod +x bootstrap.sh
 ./bootstrap.sh &
 
 

@@ -47,5 +47,6 @@ data "template_file" "install_etcd" {
     bucket = "${aws_s3_bucket.kube-artifacts-repository.id}"
     object = "${aws_s3_bucket_object.etcd.key}"
     instance_number = "${count.index}"
+    instance_count = "${var.EtcdInstanceCount}"
   }
 }
