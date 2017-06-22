@@ -10,7 +10,8 @@ resource "aws_s3_bucket_object" "etcd" {
   bucket = "${aws_s3_bucket.kube-artifacts-repository.bucket}"
   key = "etcd"
 
-  kms_key_id = "${data.aws_kms_alias.KmsKey.arn}"
+  # FIXME not able to find out a way to get the object with SSE
+  # kms_key_id = "${data.aws_kms_alias.KmsKey.arn}"
 
   source = "${var.ArtifactConfiguration["etcd.outputFile"]}"
   content_type = "application/octet-stream"
