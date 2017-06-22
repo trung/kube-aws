@@ -23,7 +23,7 @@ $${instance_name}
 EOF
 
 cat >bootstrap.sh <<EOF
-!/bin/bash
+#!/bin/bash
 
 log() {
     echo "\$(date) : \$$1" >> $$log_file
@@ -31,13 +31,13 @@ log() {
 
 count=0
 cluster=""
-while [ "\$${count}" -lt "3" ]
+while [ "\$${count}" -lt "${instance_count}" ]
 do
     instance_to_check="etcd-\$${count}"
     data=\$(curl -s -L https://s3-us-west-1.amazonaws.com/kube-artifacts-repository/\$${instance_to_check})
     if [[ "\"\$${data}\"" =~ .+NoSuchKey.+ ]]
     then
-        log "Instance \$${instance_to_check} not yet online"
+        log "Instance \$${instance_to_check} not yet online. Sleeping ..."
         sleep 3
     else
         cluster="\$${instance_to_check}=http://\$${data}:2380,\$${cluster}"
