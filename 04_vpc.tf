@@ -1,5 +1,5 @@
 resource "aws_vpc" "kubernetes" {
-  cidr_block = "10.10.0.0/16"
+  cidr_block = "${var.VpcCidr}"
   enable_dns_hostnames = true
 
   tags = "${merge(var.CommonTags, map("Name", "Kubernetes-VPC"))}"

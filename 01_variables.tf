@@ -11,8 +11,16 @@ variable "CommonTags" {
   }
 }
 
+variable "VpcCidr" {
+  default = "10.10.0.0/16"
+}
+
 variable "KubeArtifactsRepositoryBucketName" {
   default = "kube-artifacts-repository"
+}
+
+variable "EtcdInstanceCount" {
+  default = 3
 }
 
 variable "EtcdAMI" {

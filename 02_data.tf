@@ -38,3 +38,14 @@ data "aws_iam_policy_document" "kube-artifacts-repository" {
     }
   }
 }
+
+data "template_file" "install_etcd" {
+  count = "${var.EtcdInstanceCount}"
+  template = "${file("./scripts/install_etcd.tpl.sh")}"
+  vars {
+    region = "${var.region}"
+    bucket = "${aws_s3_bucket.kube-artifacts-repository.id}"
+    object = "${aws_s3_bucket_object.etcd.key}"
+    instance_number = "${count.index}"
+  }
+}

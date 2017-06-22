@@ -23,10 +23,21 @@ resource "aws_s3_bucket_object" "etcd" {
 resource "aws_s3_bucket_object" "kube" {
   bucket = "${aws_s3_bucket.kube-artifacts-repository.bucket}"
   key = "kube"
-  kms_key_id = "${data.aws_kms_alias.KmsKey.arn}"
+
+  # kms_key_id = "${data.aws_kms_alias.KmsKey.arn}"
+
   source = "${var.ArtifactConfiguration["kube.outputFile"]}"
   content_type = "application/octet-stream"
   depends_on = ["data.external.DownloadKube"]
+
+  tags = "${var.CommonTags}"
+}
+
+resource "aws_s3_bucket_object" "etcd_instance" {
+  count = "${var.EtcdInstanceCount}"
+  bucket = "${aws_s3_bucket.kube-artifacts-repository.bucket}"
+  key = "etcd-${count.index}"
+  content = "${element(aws_instance.etcd.*.private_ip, count.index)}"
 
   tags = "${var.CommonTags}"
 }
