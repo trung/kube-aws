@@ -1,18 +1,32 @@
 resource "aws_security_group" "kube-master" {
   vpc_id = "${aws_vpc.kubernetes.id}"
 
-  ingress {
-    from_port = 443
+  egress {
+    from_port = 2379
     protocol = "TCP"
-    to_port = 443
-    cidr_blocks = ["0.0.0.0/0"]
+    to_port = 2379
+    cidr_blocks = ["${var.VpcCidr}"]
+  }
+
+  egress {
+    from_port = 10250
+    protocol = "TCP"
+    to_port = 10250
+    cidr_blocks = ["${var.VpcCidr}"]
   }
 
   ingress {
-    from_port = 80
+    from_port = 6443
     protocol = "TCP"
-    to_port = 80
-    cidr_blocks = ["0.0.0.0/0"]
+    to_port = 6443
+    cidr_blocks = ["${var.MyIP}", "${var.VpcCidr}"]
+  }
+
+  ingress {
+    from_port = 8080
+    protocol = "TCP"
+    to_port = 8080
+    cidr_blocks = ["${var.MyIP}", "${var.VpcCidr}"]
   }
 
   tags = "${merge(var.CommonTags, map("Name", "Kubernetes-master"))}"
@@ -21,18 +35,25 @@ resource "aws_security_group" "kube-master" {
 resource "aws_security_group" "kube-node" {
   vpc_id = "${aws_vpc.kubernetes.id}"
 
-  egress {
-    from_port = 443
+  ingress {
+    from_port = 10250
     protocol = "TCP"
-    to_port = 443
-    cidr_blocks = ["0.0.0.0/0"]
+    to_port = 10250
+    cidr_blocks = ["${var.VpcCidr}"]
   }
 
   egress {
-    from_port = 80
+    from_port = 6443
     protocol = "TCP"
-    to_port = 80
-    cidr_blocks = ["0.0.0.0/0"]
+    to_port = 6443
+    cidr_blocks = ["${var.VpcCidr}"]
+  }
+
+  egress {
+    from_port = 8080
+    protocol = "TCP"
+    to_port = 8080
+    cidr_blocks = ["${var.VpcCidr}"]
   }
 
   tags = "${merge(var.CommonTags, map("Name", "Kubernetes-node"))}"

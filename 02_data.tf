@@ -65,9 +65,11 @@ data "template_file" "install_kube_node" {
   vars {
     region = "${var.region}"
     bucket = "${aws_s3_bucket.kube-artifacts-repository.id}"
-    object = "${aws_s3_bucket_object.kubernetes.key}"
+    kube_object = "${aws_s3_bucket_object.kubernetes.key}"
+    docker_object = "${aws_s3_bucket_object.docker.key}"
     # FIXME we just need master IP here, ideally it should be a ELB IP
     master_ip = "${element(aws_instance.kube-master.*.private_ip, 0)}"
+    vpc_cidr = "${var.VpcCidr}"
   }
 }
 
@@ -77,6 +79,9 @@ data "template_file" "install_kube_master" {
   vars {
     region = "${var.region}"
     bucket = "${aws_s3_bucket.kube-artifacts-repository.id}"
-    object = "${aws_s3_bucket_object.kubernetes.key}"
+    kube_object = "${aws_s3_bucket_object.kubernetes.key}"
+    docker_object = "${aws_s3_bucket_object.docker.key}"
+    etcd_ips = "${join(" ", aws_instance.etcd.*.private_ip)}"
+    vpc_cidr = "${var.VpcCidr}"
   }
 }

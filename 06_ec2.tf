@@ -1,5 +1,5 @@
 # FIXME each AZ should have 3 instances
-/***
+
 resource "aws_instance" "etcd" {
   count =  "${var.EtcdInstanceCount}"
   ami = "${var.EtcdAMI}"
@@ -16,7 +16,6 @@ resource "aws_instance" "etcd" {
 
   tags = "${merge(var.CommonTags, map("Name", format("Kubernetes-etcd-%d", count.index)))}"
 }
-***/
 
 resource "aws_instance" "kube-master" {
   count = "${var.KubeMasterInstanceCount}"

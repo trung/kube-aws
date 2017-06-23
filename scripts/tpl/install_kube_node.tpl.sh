@@ -1,14 +1,20 @@
 #!/bin/bash
 
+# metainf
+mkdir -p /etc/kubernetes/logs
+cat >/etc/kubernetes/metainf <<EOF
+Master Intance Private IP: ${master_ip}
+EOF
+
 # Download docker tar ball distribution from S3
 pushd /tmp
 mkdir docker
 pushd docker
-curl -s -L https://s3-${region}.amazonaws.com/${bucket}/${object} --output docker.tar.gz
+curl -s -L https://s3-${region}.amazonaws.com/${bucket}/${docker_object} --output docker.tar.gz
 tar xfvz docker.tar.gz
 cp docker/docker* /usr/local/bin/
 popd
-rm -rf docker*
+rm -rf docker
 
 # Run docker daemon
 /usr/local/bin/dockerd &
@@ -17,15 +23,17 @@ rm -rf docker*
 pushd /tmp
 mkdir kubernetes
 pushd kubernetes
-curl -s -L https://s3-${region}.amazonaws.com/${bucket}/${object} --output kubernetes.tar.gz
+curl -s -L https://s3-${region}.amazonaws.com/${bucket}/${kube_object} --output kubernetes.tar.gz
 tar xfvz kubernetes.tar.gz
-cp kubernetes/kubernetes/bin/* /usr/local/bin/
+cp kubernetes/server/bin/* /usr/local/bin/
 popd
-rm -rf kubernetes*
+rm -rf kubernetes
 
 # Run kubelet
-#/usr/local/bin/kubelet \
-#   --api-servers=https://${master_ip}
+/usr/local/bin/kubelet \
+   --api-servers=http://${master_ip}:8080 &
 
 # Run kube-proxy
-
+/usr/local/bin/kube-proxy \
+   --master=http://${master_ip}:8080 \
+   --cluster-cidr=${vpc_cidr} &

@@ -56,7 +56,6 @@ resource "aws_s3_bucket_object" "kube-master-instance" {
   tags = "${var.CommonTags}"
 }
 
-/*
 resource "aws_s3_bucket_object" "etcd_instance" {
   count = "${var.EtcdInstanceCount}"
   bucket = "${aws_s3_bucket.kube-artifacts-repository.bucket}"
@@ -65,4 +64,3 @@ resource "aws_s3_bucket_object" "etcd_instance" {
 
   tags = "${var.CommonTags}"
 }
-*/
