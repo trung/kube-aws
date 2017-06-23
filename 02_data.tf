@@ -49,7 +49,7 @@ data "aws_iam_policy_document" "kube-artifacts-repository" {
 
 data "template_file" "install_etcd" {
   count = "${var.EtcdInstanceCount}"
-  template = "${file("./scripts/install_etcd.tpl.sh")}"
+  template = "${file("./scripts/tpl/install_etcd.tpl.sh")}"
   vars {
     region = "${var.region}"
     bucket = "${aws_s3_bucket.kube-artifacts-repository.id}"
@@ -61,10 +61,30 @@ data "template_file" "install_etcd" {
 
 data "template_file" "install_docker" {
   count = "${var.KubeNodeInstanceCount}"
-  template = "${file("./scripts/install_docker.tpl.sh")}"
+  template = "${file("./scripts/tpl/install_docker.tpl.sh")}"
   vars {
     region = "${var.region}"
     bucket = "${aws_s3_bucket.kube-artifacts-repository.id}"
     object = "${aws_s3_bucket_object.docker.key}"
+  }
+}
+
+data "template_file" "install_kube_node" {
+  count = "${var.KubeNodeInstanceCount}"
+  template = "${file("./scripts/tpl/install_kube_node.tpl.sh")}"
+  vars {
+    region = "${var.region}"
+    bucket = "${aws_s3_bucket.kube-artifacts-repository.id}"
+    object = "${aws_s3_bucket_object.kubernetes.key}"
+  }
+}
+
+data "template_file" "install_kube_master" {
+  count = "${var.KubeNodeInstanceCount}"
+  template = "${file("./scripts/tpl/install_kube_master.tpl.sh")}"
+  vars {
+    region = "${var.region}"
+    bucket = "${aws_s3_bucket.kube-artifacts-repository.id}"
+    object = "${aws_s3_bucket_object.kubernetes.key}"
   }
 }

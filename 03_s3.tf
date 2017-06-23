@@ -20,9 +20,9 @@ resource "aws_s3_bucket_object" "etcd" {
   tags = "${var.CommonTags}"
 }
 
-resource "aws_s3_bucket_object" "kube" {
+resource "aws_s3_bucket_object" "kubernetes" {
   bucket = "${aws_s3_bucket.kube-artifacts-repository.bucket}"
-  key = "kube"
+  key = "kubernetes"
 
   # kms_key_id = "${data.aws_kms_alias.KmsKey.arn}"
 
@@ -42,6 +42,15 @@ resource "aws_s3_bucket_object" "docker" {
   source = "${var.ArtifactConfiguration["docker.outputFile"]}"
   content_type = "application/octet-stream"
   depends_on = ["data.external.DownloadDocker"]
+
+  tags = "${var.CommonTags}"
+}
+
+resource "aws_s3_bucket_object" "kube-master-instance" {
+  count = "${var.KubeMasterInstanceCount}"
+  bucket = "${aws_s3_bucket.kube-artifacts-repository.bucket}"
+  key = "kube-master-instance-${count.index}"
+  content = "${element(aws_instance.kube-master.*.private_ip, count.index)}"
 
   tags = "${var.CommonTags}"
 }

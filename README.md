@@ -1,6 +1,6 @@
 Inspired by [Kubernetes from scratch to AWS with Terraform and Ansible](https://opencredo.com/kubernetes-aws-terraform-ansible-1/) series
 
-Instead, I'm using S3 bucket to store artifacts
+Instead, I'm using S3 bucket to store [software binaries](https://kubernetes.io/docs/getting-started-guides/scratch/#software-binaries)
 
 ## Deployment model
 * `etcd`, `docker` and `kubernetes` distributions are stored in S3
