@@ -76,6 +76,8 @@ data "template_file" "install_kube_node" {
     region = "${var.region}"
     bucket = "${aws_s3_bucket.kube-artifacts-repository.id}"
     object = "${aws_s3_bucket_object.kubernetes.key}"
+    # FIXME we just need master IP here, ideally it should be a ELB IP
+    master_ip = "${element(aws_instance.kube-master.*.private_ip, 0)}"
   }
 }
 

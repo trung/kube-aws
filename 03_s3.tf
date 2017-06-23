@@ -46,6 +46,7 @@ resource "aws_s3_bucket_object" "docker" {
   tags = "${var.CommonTags}"
 }
 
+# TODO do we really need this?
 resource "aws_s3_bucket_object" "kube-master-instance" {
   count = "${var.KubeMasterInstanceCount}"
   bucket = "${aws_s3_bucket.kube-artifacts-repository.bucket}"

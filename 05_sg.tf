@@ -18,6 +18,26 @@ resource "aws_security_group" "kube-master" {
   tags = "${merge(var.CommonTags, map("Name", "Kubernetes-master"))}"
 }
 
+resource "aws_security_group" "kube-node" {
+  vpc_id = "${aws_vpc.kubernetes.id}"
+
+  egress {
+    from_port = 443
+    protocol = "TCP"
+    to_port = 443
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port = 80
+    protocol = "TCP"
+    to_port = 80
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = "${merge(var.CommonTags, map("Name", "Kubernetes-node"))}"
+}
+
 resource "aws_security_group" "etcd" {
   vpc_id = "${aws_vpc.kubernetes.id}"
 
