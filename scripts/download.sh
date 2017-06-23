@@ -11,9 +11,9 @@ current_url_hash_value=$(echo "$url" | md5)
 
 if [ "${prev_url_hash_value}" == "${current_url_hash_value}" ] && [ -f "${file}" ]
 then
-    echo "{'download' : 'false'}"
+    echo "{\"download\" : \"false\"}"
 else
     curl -k -s -L -X GET ${url} --output ${file}
     echo "${current_url_hash_value}" > ${url_hash_file}
-    echo "{'download' : 'true'}"
+    echo "{\"download\" : \"true\"}"
 fi
