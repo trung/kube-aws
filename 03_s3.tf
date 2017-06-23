@@ -46,6 +46,7 @@ resource "aws_s3_bucket_object" "docker" {
   tags = "${var.CommonTags}"
 }
 
+/*
 resource "aws_s3_bucket_object" "etcd_instance" {
   count = "${var.EtcdInstanceCount}"
   bucket = "${aws_s3_bucket.kube-artifacts-repository.bucket}"
@@ -54,3 +55,4 @@ resource "aws_s3_bucket_object" "etcd_instance" {
 
   tags = "${var.CommonTags}"
 }
+*/

@@ -58,3 +58,13 @@ data "template_file" "install_etcd" {
     instance_count = "${var.EtcdInstanceCount}"
   }
 }
+
+data "template_file" "install_docker" {
+  count = "${var.KubeNodeInstanceCount}"
+  template = "${file("./scripts/install_docker.tpl.sh")}"
+  vars {
+    region = "${var.region}"
+    bucket = "${aws_s3_bucket.kube-artifacts-repository.id}"
+    object = "${aws_s3_bucket_object.docker.key}"
+  }
+}
