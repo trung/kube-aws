@@ -36,7 +36,7 @@ variable "KubeNodeInstanceType" {
 }
 
 variable "KubeNodeInstanceCount" {
-  default = 1
+  default = 2
 }
 
 variable "EtcdInstanceType" {

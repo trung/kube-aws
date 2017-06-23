@@ -3,3 +3,4 @@ terraform.tfstate
 terraform.tfstate.backup
 .terraform*
 bin/*.tar.gz
+bin/*.md5
