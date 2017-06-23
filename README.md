@@ -7,6 +7,7 @@ Instead, I'm using S3 bucket to store [software binaries](https://kubernetes.io/
 * 3 EC2 instances of `etcd`
 * 1 EC2 instance of Kubernetes Master
 * 2 EC2 instance of Kubernetes Node
+
 ## Steps
 1. Install `etcd` cluster
    * Option 1: from tar ball distribution
