@@ -17,6 +17,14 @@ resource "aws_security_group" "kubernetes" {
     cidr_blocks = ["${var.MyIP}"]
   }
 
+  # etcd metrics
+  ingress {
+    from_port = 2379
+    protocol = "TCP"
+    to_port = 2379
+    cidr_blocks = ["${var.MyIP}"]
+  }
+
   # etcd cluster
   ingress {
     from_port = 2379
