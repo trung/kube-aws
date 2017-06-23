@@ -1,21 +1,5 @@
-resource "aws_security_group" "kubernetes" {
+resource "aws_security_group" "etcd" {
   vpc_id = "${aws_vpc.kubernetes.id}"
-
-  # ssh
-  ingress {
-    from_port = 22
-    protocol = "TCP"
-    to_port = 22
-    cidr_blocks = ["${var.MyIP}"]
-  }
-
-  # ping
-  ingress {
-    from_port = 8
-    protocol = "ICMP"
-    to_port = -1
-    cidr_blocks = ["${var.MyIP}"]
-  }
 
   # etcd metrics
   ingress {
@@ -40,6 +24,12 @@ resource "aws_security_group" "kubernetes" {
     cidr_blocks = ["${var.VpcCidr}"]
   }
 
+  tags = "${merge(var.CommonTags, map("Name", "Kubernetes-etcd"))}"
+}
+
+resource "aws_security_group" "common" {
+  vpc_id = "${aws_vpc.kubernetes.id}"
+
   # S3 access
   egress {
     from_port = 443
@@ -48,5 +38,27 @@ resource "aws_security_group" "kubernetes" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = "${merge(var.CommonTags, map("Name", "Kubernetes-DefaultSG"))}"
+  tags = "${merge(var.CommonTags, map("Name", "Kubernetes-common"))}"
+}
+
+resource "aws_security_group" "ssh" {
+  vpc_id = "${aws_vpc.kubernetes.id}"
+
+  # ssh
+  ingress {
+    from_port = 22
+    protocol = "TCP"
+    to_port = 22
+    cidr_blocks = ["${var.MyIP}"]
+  }
+
+  # ping
+  ingress {
+    from_port = 8
+    protocol = "ICMP"
+    to_port = -1
+    cidr_blocks = ["${var.MyIP}"]
+  }
+
+  tags = "${merge(var.CommonTags, map("Name", "Kubernetes-debug"))}"
 }

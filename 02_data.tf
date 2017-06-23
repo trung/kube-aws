@@ -22,6 +22,14 @@ data "external" "DownloadKube" {
   ]
 }
 
+data "external" "DownloadDocker" {
+  program = ["sh",
+    "./scripts/download.sh",
+    "${var.ArtifactConfiguration["docker.url"]}",
+    "${var.ArtifactConfiguration["docker.outputFile"]}"
+  ]
+}
+
 data "aws_iam_policy_document" "kube-artifacts-repository" {
   statement {
     sid = "Access-to-kube-artifacts-repository-only"

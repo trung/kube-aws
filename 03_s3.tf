@@ -33,6 +33,19 @@ resource "aws_s3_bucket_object" "kube" {
   tags = "${var.CommonTags}"
 }
 
+resource "aws_s3_bucket_object" "docker" {
+  bucket = "${aws_s3_bucket.kube-artifacts-repository.bucket}"
+  key = "docker"
+
+  # kms_key_id = "${data.aws_kms_alias.KmsKey.arn}"
+
+  source = "${var.ArtifactConfiguration["docker.outputFile"]}"
+  content_type = "application/octet-stream"
+  depends_on = ["data.external.DownloadDocker"]
+
+  tags = "${var.CommonTags}"
+}
+
 resource "aws_s3_bucket_object" "etcd_instance" {
   count = "${var.EtcdInstanceCount}"
   bucket = "${aws_s3_bucket.kube-artifacts-repository.bucket}"
