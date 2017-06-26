@@ -31,9 +31,9 @@ rm -rf kubernetes
 
 # Run kubelet
 /usr/local/bin/kubelet \
-   --api-servers=http://${master_ip}:8080 2>&1 > /etc/kubernetes/logs/kubelet.log &
+   --api-servers=http://${master_ip}:8080 > /etc/kubernetes/logs/kubelet.log 2>&1 &
 
 # Run kube-proxy
 /usr/local/bin/kube-proxy \
    --master=http://${master_ip}:8080 \
-   --cluster-cidr=${vpc_cidr} 2>&1 > /etc/kubernetes/logs/kube-proxy.log &
+   --cluster-cidr=${vpc_cidr} > /etc/kubernetes/logs/kube-proxy.log 2>&1 &

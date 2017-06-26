@@ -11,7 +11,7 @@ apiserver_log="/etc/kubernetes/logs/apiserver.log"
 controllermanager_log="/etc/kubernetes/logs/controllermanager.log"
 scheduler_log="/etc/kubernetes/logs/scheduler.log"
 cat >/etc/kubernetes/metainf <<EOF
-etcd instances IPs: \$${etcd_servers}
+etcd instances IPs: $${etcd_servers}
 EOF
 
 
@@ -44,7 +44,7 @@ rm -rf kubernetes
 /usr/local/bin/kube-apiserver \
   --etcd-servers=$${etcd_servers} \
   --insecure-bind-address=0.0.0.0 \
-  --insecure-allow-any-token demo/system \
+  --insecure-allow-any-token=demo/system \
   --service-cluster-ip-range=${vpc_cidr} > $${apiserver_log} 2>&1 &
 
 /usr/local/bin/kube-controller-manager \

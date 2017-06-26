@@ -47,6 +47,31 @@ data "aws_iam_policy_document" "kube-artifacts-repository" {
   }
 }
 
+data "aws_iam_policy_document" "kube-docker-repository" {
+  statement {
+    sid = "Access-to-kube-docker-repository-only"
+    actions = [
+      "s3:*",
+    ]
+    resources = [
+      "arn:aws:s3:::${var.KubeDockerRepositoryBucketName}",
+      "arn:aws:s3:::${var.KubeDockerRepositoryBucketName}/*",
+    ]
+    condition {
+      test = "IpAddress"
+      variable = "aws:SourceIp"
+      values = [
+        "${var.MyIP}",
+        "${var.VpcCidr}"
+      ]
+    }
+    principals {
+      identifiers = ["*"]
+      type = "AWS"
+    }
+  }
+}
+
 data "template_file" "install_etcd" {
   count = "${var.EtcdInstanceCount}"
   template = "${file("./scripts/tpl/install_etcd.tpl.sh")}"

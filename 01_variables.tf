@@ -19,6 +19,11 @@ variable "KubeArtifactsRepositoryBucketName" {
   default = "kube-artifacts-repository"
 }
 
+variable "KubeDockerRepositoryBucketName" {
+  default = "kube-docker-repository"
+  description = "S3-backed private docker repository"
+}
+
 variable "KubeAMI" {
   default = "ami-9fe6c7ff"  # us-west-1
 }

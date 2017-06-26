@@ -7,8 +7,16 @@ $ kubectl config set-cluster lab --server=https://<master instance public ip>:64
 $ kubectl config set-cluster lab --insecure-skip-tls-verify=true
 ```
 
+## Prepare
+
+Create a function to wrap the common params
+```bash
+$ function k() { kubectl --cluster=lab --token=demo/system $@; }
+```
+
 ## Verify
 
 ```bash
-$ kubectl --cluster=lab --token=demo/system get nodes
+$ k get nodes
 ```
+

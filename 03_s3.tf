@@ -6,6 +6,14 @@ resource "aws_s3_bucket" "kube-artifacts-repository" {
   tags  = "${var.CommonTags}"
 }
 
+resource "aws_s3_bucket" "kube-docker-repository" {
+  bucket = "${var.KubeDockerRepositoryBucketName}"
+  acl = "private"
+  policy = "${data.aws_iam_policy_document.kube-docker-repository.json}"
+
+  tags  = "${var.CommonTags}"
+}
+
 resource "aws_s3_bucket_object" "etcd" {
   bucket = "${aws_s3_bucket.kube-artifacts-repository.bucket}"
   key = "etcd"
@@ -31,10 +39,11 @@ resource "aws_s3_bucket_object" "kubernetes" {
   depends_on = ["data.external.DownloadKube"]
 
   # due to this artifact is HUGE so we don't want to destroy it
+  /*
   lifecycle {
     prevent_destroy = true
     ignore_changes = []
-  }
+  }*/
 
   tags = "${var.CommonTags}"
 }
