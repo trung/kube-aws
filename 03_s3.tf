@@ -30,6 +30,12 @@ resource "aws_s3_bucket_object" "kubernetes" {
   content_type = "application/octet-stream"
   depends_on = ["data.external.DownloadKube"]
 
+  # due to this artifact is HUGE so we don't want to destroy it
+  lifecycle {
+    prevent_destroy = true
+    ignore_changes = []
+  }
+
   tags = "${var.CommonTags}"
 }
 

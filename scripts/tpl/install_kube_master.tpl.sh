@@ -44,6 +44,7 @@ rm -rf kubernetes
 /usr/local/bin/kube-apiserver \
   --etcd-servers=$${etcd_servers} \
   --insecure-bind-address=0.0.0.0 \
+  --insecure-allow-any-token demo/system \
   --service-cluster-ip-range=${vpc_cidr} > $${apiserver_log} 2>&1 &
 
 /usr/local/bin/kube-controller-manager \
