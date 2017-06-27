@@ -1,3 +1,5 @@
+**Update**: this attempt will not bring me any further. It's rather a learning excercise to understand how different pieces are fit together.
+
 Inspired by [Kubernetes from scratch to AWS with Terraform and Ansible](https://opencredo.com/kubernetes-aws-terraform-ansible-1/) series
 
 Instead, I'm using S3 bucket to store [software binaries](https://kubernetes.io/docs/getting-started-guides/scratch/#software-binaries)
@@ -18,4 +20,3 @@ Instead, I'm using S3 bucket to store [software binaries](https://kubernetes.io/
      1. Install services for Kubernetes Master instance
      +  Install services for Kubernetes Node instances
         * Install Docker
-        *
